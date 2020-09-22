@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{fragments/main_layout}"
+      xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer</title>
+</head>
+<body>
+<div class="container" layout:fragment="content">
+
+<h1>Register Customer</h1>
+<form th:action="@{/customer}" method="POST">
+
+    <label for="inputId">Id</label>
+    <input type="input" name="id" id="inputId">
+
+    <label for="inputName">Name</label>
+    <input type="input" name="name" id="inputName">
+
+    <label for="inputPin">Pin</label>
+    <input type="password" name="pin" id="inputPin">
+
+    <input type="submit">
+</form>
+<hr>
+
+<h1>All Customers</h1>
+
+<table border="1px">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Pin</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="customer : ${allCustomers}">
+        <td th:text="${customer.id}"></td>
+        <td th:text="${customer.name}"></td>
+        <td th:text="${customer.pin}"></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+</html>

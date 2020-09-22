@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{fragments/main_layout}"
+      xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank Account</title>
+</head>
+<body>
+<div class="container" layout:fragment="content">
+<h1>Open Bank Account</h1>
+<form th:action="@{/bankaccount}" method="POST">
+
+    <label for="inputId">Id</label>
+    <input type="input" name="id" id="inputId">
+
+    <label for="inputCustomerId">Customer Id</label>
+    <input type="input" name="customerId" id="inputCustomerId">
+
+    <label for="inputType">Type</label>
+    <input type="input" name="customerType" id="inputType">
+
+    <label for="inputBalance">Balance</label>
+    <input type="number" name="balance" id="inputBalance">
+
+    <input type="submit">
+</form>
+
+<h1>All Accounts</h1>
+
+<table border="1px">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>CustomerId</th>
+        <th>Type</th>
+        <th>Balance</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="account : ${allAccounts}">
+        <td th:text="${account.id}"></td>
+        <td th:text="${account.customerId}"></td>
+        <td th:text="${account.type}"></td>
+        <td th:text="${account.balance}"></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+</html>
