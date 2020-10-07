@@ -30,6 +30,14 @@ public class BankAccountService {
         } else throw new NoSuchElementException();
     }
 
+    public void deleteBankAccount(int id) {
+        try {
+            repository.deleteById(id);
+        } catch (NoSuchElementException e) {
+            return;
+        }
+    }
+
     public List<BankAccount> getBankAccounts() {
         return repository.findAll();
     }

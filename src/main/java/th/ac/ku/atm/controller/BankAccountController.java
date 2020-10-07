@@ -31,5 +31,9 @@ public class BankAccountController {
             model.addAttribute("allAccounts", bankAccountService.getBankAccounts());
             return "redirect:bankaccount";
         }
-
+        @PostMapping(value="/delete/{id}")
+        public String deleteAccount(@PathVariable int id) {
+            bankAccountService.deleteBankAccount(id);
+            return "redirect:/bankaccount";
+        }
 }

@@ -1,7 +1,6 @@
 package th.ac.ku.atm.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class BankAccount {
@@ -17,6 +16,10 @@ public class BankAccount {
     public void setId(int id) {
         this.id = id;
     }
+
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(unique = true, name = "customerId", referencedColumnName = "id")
+//    private Customer customer;
 
     public int getCustomerId() {
         return customerId;

@@ -42,6 +42,7 @@
         <th>CustomerId</th>
         <th>Type</th>
         <th>Balance</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -50,6 +51,11 @@
         <td th:text="${account.customerId}"></td>
         <td th:text="${account.type}"></td>
         <td th:text="${account.balance}"></td>
+        <td>
+            <form th:action="@{/bankaccount/delete/{id}(id=${account.id})}" method="POST">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
