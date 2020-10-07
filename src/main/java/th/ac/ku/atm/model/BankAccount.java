@@ -1,8 +1,11 @@
 package th.ac.ku.atm.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
