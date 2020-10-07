@@ -16,6 +16,7 @@ public class BankAccountRestController {
         this.repository = repository;
     }
 
+
     @PostMapping
     public BankAccount create(@RequestBody BankAccount bankAccount) {
         BankAccount record = repository.save(bankAccount);

@@ -43,11 +43,14 @@ public class BankAccountService {
 
 
 
-    public void createBankAccount(BankAccount account) {
-        if (customerService.findCustomer(account.getCustomerId()) != null) {
-            repository.save(account);
-        } else throw new NoSuchElementException();
+    public void openBankAccount(BankAccount bankAccount) {
+//        if (customerService.findCustomer(account.getCustomerId()) != null) {
+//            repository.save(account);
+//        } else throw new NoSuchElementException();
+        String url = "http://localhost:8091/api/bankaccount";
+        restTemplate.postForObject(url, bankAccount, BankAccount.class);
     }
+    
 
     public void deleteBankAccount(int id) {
         try {
@@ -58,7 +61,15 @@ public class BankAccountService {
     }
 
     public List<BankAccount> getBankAccounts() {
-        return repository.findAll();
+        String url = "http://localhost:8091/api/bankaccount/";
+
+        ResponseEntity<BankAccount[]> response =
+                restTemplate.getForEntity(url, BankAccount[].class);
+
+        BankAccount[] accounts = response.getBody();
+        assert accounts != null;
+        return Arrays.asList(accounts);
+        //return repository.findAll();
     }
 
     private String hash(String pin) {

@@ -11,27 +11,27 @@ import th.ac.ku.atm.service.BankAccountService;
 @RequestMapping("/bankaccount")
 public class BankAccountController {
 
-        private BankAccountService bankAccountService;
+        private BankAccountService accountService;
 
         @Autowired
         public BankAccountController(BankAccountService bankAccountService) {
-            this.bankAccountService = bankAccountService;
+            this.accountService = bankAccountService;
         }
 
         @GetMapping
         public String getBankAccountPage(Model model) {
-            model.addAttribute("allAccounts", bankAccountService.getBankAccounts());
+            model.addAttribute("allAccounts", accountService.getBankAccounts());
             return "bankaccount";
         }
         @PostMapping
-        public String registerAccount(@ModelAttribute BankAccount account, Model model) {
-            bankAccountService.createBankAccount(account);
-            model.addAttribute("allAccounts", bankAccountService.getBankAccounts());
+        public String openAccount(@ModelAttribute BankAccount account, Model model) {
+            accountService.openBankAccount(account);
+            model.addAttribute("bankaccounts",accountService.getBankAccounts());
             return "redirect:bankaccount";
         }
         @PostMapping(value="/delete/{id}")
         public String deleteAccount(@PathVariable int id) {
-            bankAccountService.deleteBankAccount(id);
+            accountService.deleteBankAccount(id);
             return "redirect:/bankaccount";
         }
 }
