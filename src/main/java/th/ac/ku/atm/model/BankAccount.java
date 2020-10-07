@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 public class BankAccount {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int customerId;
     private String type;
