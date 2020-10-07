@@ -76,11 +76,19 @@ public class BankAccountService {
         String salt = BCrypt.gensalt(12);
         return BCrypt.hashpw(pin, salt);
     }
-    public BankAccount findBankAccount(int id) {
-        try {
-            return repository.findById(id).get();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
+    public BankAccount getBankAccount(int id) {
+        String url = "http://localhost:8091/api/bankaccount/" + id;
+
+        ResponseEntity<BankAccount> response =
+                restTemplate.getForEntity(url, BankAccount.class);
+
+        return response.getBody();
     }
+
+    public void editBankAccount(BankAccount bankAccount) {
+        String url = "http://localhost:8091/api/bankaccount/" +
+                bankAccount.getId();
+        restTemplate.put(url, bankAccount);
+    }
+
 }
