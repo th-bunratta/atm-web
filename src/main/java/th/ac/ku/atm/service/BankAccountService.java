@@ -5,13 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 import th.ac.ku.atm.data.BankAccountRepository;
 import th.ac.ku.atm.model.BankAccount;
+import th.ac.ku.atm.model.Transaction;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class BankAccountService {
@@ -44,20 +45,29 @@ public class BankAccountService {
 
 
     public void openBankAccount(BankAccount bankAccount) {
-//        if (customerService.findCustomer(account.getCustomerId()) != null) {
-//            repository.save(account);
-//        } else throw new NoSuchElementException();
         String url = "http://localhost:8091/api/bankaccount";
         restTemplate.postForObject(url, bankAccount, BankAccount.class);
     }
     
 
     public void deleteBankAccount(int id) {
-        try {
-            repository.deleteById(id);
-        } catch (NoSuchElementException e) {
-            return;
+        String url = "http://localhost:8091/api/bankaccount/" + id;
+        restTemplate.delete(url);
+    }
+
+    public String transactAccount(TransactionMode mode, @PathVariable int id, Transaction tx) {
+        String modeStr = "deposit";
+        switch (mode) {
+            case Deposit:
+                modeStr = "deposit";
+                break;
+            case Withdrawal:
+                modeStr = "withdraw";
+                break;
         }
+        String endpoint = String.format("http://localhost:8091/api/bankaccount/%s/%s", modeStr, id);
+        BankAccount response = restTemplate.postForObject( endpoint, tx, BankAccount.class);
+        return response.toString();
     }
 
     public List<BankAccount> getBankAccounts() {

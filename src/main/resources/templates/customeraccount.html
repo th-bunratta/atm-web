@@ -12,12 +12,26 @@
         <tr>
             <th>Type</th>
             <th>Balance</th>
+            <th>Withdraw</th>
+            <th>Deposit</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="account : ${bankaccounts}">
             <td th:text="${account.type}"></td>
             <td th:text="${account.balance}"></td>
+            <td>
+                <form th:action="@{/bankaccount/withdraw/{id}(id=${account.id})}" method="POST">
+                    <input class="form-control" type="number" name="amount" id="inputAmount">
+                    <button type="submit" class="btn btn-danger">Withdraw</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/bankaccount/deposit/{id}(id=${account.id})}" method="POST">
+                    <input class="form-control" type="number" name="amount" id="inputDeposit">
+                    <button type="submit" class="btn btn-success">Deposit</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
