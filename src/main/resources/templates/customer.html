@@ -5,30 +5,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Customer</title>
+    <link th:rel="stylesheet" th:href="@{css/bootstrap.min.css}">
 </head>
 <body>
 <div class="container" layout:fragment="content">
 
 <h1>Register Customer</h1>
 <form th:action="@{/customer}" method="POST">
-
-    <label for="inputId">Id</label>
-    <input type="input" name="id" id="inputId">
-
+    <div class="form-group">
+        <label for="inputId">Id</label>
+        <input class="form-control"  type="input" name="id" id="inputId">
+    </div>
+    <div class="form-group">
     <label for="inputName">Name</label>
-    <input type="input" name="name" id="inputName">
-
+    <input class="form-control" type="input" name="name" id="inputName">
+    </div>
+    <div class="form-group">
     <label for="inputPin">Pin</label>
-    <input type="password" name="pin" id="inputPin">
-
-    <input type="submit">
+    <input class="form-control" type="password" name="pin" id="inputPin">
+    </div>
+    <div class="form-group">
+    <input type="submit"  class="btn btn-primary">
+    </div>
 </form>
 <hr>
 
 <h1>All Customers</h1>
 
-<table border="1px">
-    <thead>
+<table border="1px" class="table table-bordered">
+    <thead class="thead-light">
     <tr>
         <th>Id</th>
         <th>Name</th>

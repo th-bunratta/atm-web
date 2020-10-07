@@ -6,31 +6,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Bank Account</title>
+    <link th:rel="stylesheet" th:href="@{css/bootstrap.min.css}">
 </head>
 <body>
 <div class="container" layout:fragment="content">
 <h1>Open Bank Account</h1>
 <form th:action="@{/bankaccount}" method="POST">
-
-    <label for="inputId">Id</label>
-    <input type="input" name="id" id="inputId">
-
-    <label for="inputCustomerId">Customer Id</label>
-    <input type="input" name="customerId" id="inputCustomerId">
-
-    <label for="inputType">Type</label>
-    <input type="input" name="customerType" id="inputType">
-
-    <label for="inputBalance">Balance</label>
-    <input type="number" name="balance" id="inputBalance">
-
-    <input type="submit">
+    <div class="form-group">
+        <label for="inputId">Id</label>
+        <input class="form-control" type="input" name="id" id="inputId">
+    </div>
+    <div class="form-group">
+        <label for="inputCustomerId">Customer Id</label>
+        <input class="form-control" type="input" name="customerId" id="inputCustomerId">
+    </div>
+    <div class="form-group">
+        <label for="inputType">Type</label>
+        <input class="form-control" type="input" name="customerType" id="inputType">
+    </div>
+    <div class="form-group">
+        <label for="inputBalance">Balance</label>
+        <input class="form-control" type="number" name="balance" id="inputBalance">
+    </div>
+    <div class="form-group">
+     <input class="btn btn-primary" type="submit">
+    </div>
 </form>
 
 <h1>All Accounts</h1>
 
-<table border="1px">
-    <thead>
+<table class="table table-bordered" border="1px">
+    <thead class="thead-light">
     <tr>
         <th>Id</th>
         <th>CustomerId</th>

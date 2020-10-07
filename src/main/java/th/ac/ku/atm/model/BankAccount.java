@@ -1,6 +1,11 @@
 package th.ac.ku.atm.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class BankAccount {
+    @Id
     private int id;
     private int customerId;
     private String type;
