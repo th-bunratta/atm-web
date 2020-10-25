@@ -9,6 +9,8 @@ import org.springframework.web.client.RestTemplate;
 import th.ac.ku.atm.model.BankAccount;
 import th.ac.ku.atm.model.Transaction;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,9 +18,10 @@ import java.util.List;
 public class BankAccountService {
     private th.ac.ku.atm.service.CustomerService customerService;
     private RestTemplate restTemplate;
+    private URI baseUrl = new URI("http://bankaccount-api:8091/api/bankaccount");
 
 
-    public BankAccountService(RestTemplate restTemplate) {
+    public BankAccountService(RestTemplate restTemplate) throws URISyntaxException {
         this.restTemplate = restTemplate;
     }
 
@@ -28,8 +31,7 @@ public class BankAccountService {
     }
 
     public List<BankAccount> getCustomerBankAccount(int customerId) {
-        String url = "http://localhost:8091/api/bankaccount/customer/" +
-                customerId;
+        String url = baseUrl.resolve( "customer/" + customerId).toString();
         ResponseEntity<BankAccount[]> response =
                 restTemplate.getForEntity(url, BankAccount[].class);
 
@@ -37,17 +39,13 @@ public class BankAccountService {
 
         return Arrays.asList(accounts);
     }
-
-
-
-    public void openBankAccount(BankAccount bankAccount) {
-        String url = "http://localhost:8091/api/bankaccount";
-        restTemplate.postForObject(url, bankAccount, BankAccount.class);
-    }
     
+    public void openBankAccount(BankAccount bankAccount) {
+        restTemplate.postForObject(baseUrl.toString(), bankAccount, BankAccount.class);
+    }
 
     public void deleteBankAccount(int id) {
-        String url = "http://localhost:8091/api/bankaccount/" + id;
+        String url = baseUrl.resolve(Integer.toString(id)).toString();
         restTemplate.delete(url);
     }
 
@@ -61,21 +59,18 @@ public class BankAccountService {
                 modeStr = "withdraw";
                 break;
         }
-        String endpoint = String.format("http://localhost:8091/api/bankaccount/%s/%s", modeStr, id);
+        String endpoint = baseUrl.resolve(String.format("%s/%s", modeStr, id)).toString();
         BankAccount response = restTemplate.postForObject( endpoint, tx, BankAccount.class);
         return response.toString();
     }
 
     public List<BankAccount> getBankAccounts() {
-        String url = "http://localhost:8091/api/bankaccount/";
-
+        String url = baseUrl.toString();
         ResponseEntity<BankAccount[]> response =
                 restTemplate.getForEntity(url, BankAccount[].class);
-
         BankAccount[] accounts = response.getBody();
         assert accounts != null;
         return Arrays.asList(accounts);
-        //return repository.findAll();
     }
 
     private String hash(String pin) {
@@ -83,8 +78,7 @@ public class BankAccountService {
         return BCrypt.hashpw(pin, salt);
     }
     public BankAccount getBankAccount(int id) {
-        String url = "http://localhost:8091/api/bankaccount/" + id;
-
+        String url = baseUrl.resolve(Integer.toString(id)).toString();
         ResponseEntity<BankAccount> response =
                 restTemplate.getForEntity(url, BankAccount.class);
 
@@ -92,8 +86,7 @@ public class BankAccountService {
     }
 
     public void editBankAccount(BankAccount bankAccount) {
-        String url = "http://localhost:8091/api/bankaccount/" +
-                bankAccount.getId();
+        String url = baseUrl.resolve(Integer.toString(bankAccount.getId())).toString();
         restTemplate.put(url, bankAccount);
     }
 
