@@ -88,13 +88,6 @@
 					<target>8</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>th.ac.ku.atm.AtmApplication</mainClass>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
