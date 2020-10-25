@@ -1,6 +1,5 @@
 package th.ac.ku.atm.service;
 
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -9,8 +8,8 @@ import org.springframework.web.client.RestTemplate;
 import th.ac.ku.atm.model.BankAccount;
 import th.ac.ku.atm.model.Transaction;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,10 +17,10 @@ import java.util.List;
 public class BankAccountService {
     private th.ac.ku.atm.service.CustomerService customerService;
     private RestTemplate restTemplate;
-    private URI baseUrl = new URI("http://bankaccount-api:8091/api/bankaccount");
+    private URL baseUrl = new URL("http://bankaccount-api:8091/api/bankaccount/");
 
 
-    public BankAccountService(RestTemplate restTemplate) throws URISyntaxException {
+    public BankAccountService(RestTemplate restTemplate) throws MalformedURLException {
         this.restTemplate = restTemplate;
     }
 
@@ -30,14 +29,19 @@ public class BankAccountService {
         this.customerService = customerService;
     }
 
-    public List<BankAccount> getCustomerBankAccount(int customerId) {
-        String url = baseUrl.resolve( "customer/" + customerId).toString();
-        ResponseEntity<BankAccount[]> response =
-                restTemplate.getForEntity(url, BankAccount[].class);
+    public List<BankAccount> getCustomerBankAccount(int customerId)  {
+        String url = null;
+        try {
+            url = new URL( baseUrl,"customer/" + customerId).toString();
+            ResponseEntity<BankAccount[]> response =
+                    restTemplate.getForEntity(url, BankAccount[].class);
 
-        BankAccount[] accounts = response.getBody();
-
-        return Arrays.asList(accounts);
+            BankAccount[] accounts = response.getBody();
+            return Arrays.asList(accounts);
+        } catch (MalformedURLException e) {
+            e.printStackTrace(); 
+            return null;
+        }
     }
     
     public void openBankAccount(BankAccount bankAccount) {
@@ -45,8 +49,12 @@ public class BankAccountService {
     }
 
     public void deleteBankAccount(int id) {
-        String url = baseUrl.resolve(Integer.toString(id)).toString();
-        restTemplate.delete(url);
+        try {
+            String url = new URL(baseUrl,Integer.toString(id)).toString();
+            restTemplate.delete(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     public String transactAccount(th.ac.ku.atm.service.TransactionMode mode, @PathVariable int id, Transaction tx) {
@@ -59,9 +67,16 @@ public class BankAccountService {
                 modeStr = "withdraw";
                 break;
         }
-        String endpoint = baseUrl.resolve(String.format("%s/%s", modeStr, id)).toString();
-        BankAccount response = restTemplate.postForObject( endpoint, tx, BankAccount.class);
-        return response.toString();
+        try {
+            String  endpoint = new URL(baseUrl, String.format("%s/%s", modeStr, id)).toString();
+            BankAccount response = restTemplate.postForObject( endpoint, tx, BankAccount.class);
+            return response.toString();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return "";
+        }
+       
+       
     }
 
     public List<BankAccount> getBankAccounts() {
@@ -73,20 +88,25 @@ public class BankAccountService {
         return Arrays.asList(accounts);
     }
 
-    private String hash(String pin) {
-        String salt = BCrypt.gensalt(12);
-        return BCrypt.hashpw(pin, salt);
-    }
     public BankAccount getBankAccount(int id) {
-        String url = baseUrl.resolve(Integer.toString(id)).toString();
-        ResponseEntity<BankAccount> response =
-                restTemplate.getForEntity(url, BankAccount.class);
+        try {
+            String url = new URL(baseUrl, (Integer.toString(id))).toString();
+            ResponseEntity<BankAccount> response =
+                    restTemplate.getForEntity(url, BankAccount.class);
 
-        return response.getBody();
+            return response.getBody();
+        } catch (MalformedURLException e) {
+            return null;
+        }
     }
 
     public void editBankAccount(BankAccount bankAccount) {
-        String url = baseUrl.resolve(Integer.toString(bankAccount.getId())).toString();
+        String url = null;
+        try {
+            url = new URL(baseUrl, (Integer.toString(bankAccount.getId()))).toString();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         restTemplate.put(url, bankAccount);
     }
 
