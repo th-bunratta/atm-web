@@ -2,12 +2,10 @@ package th.ac.ku.atm.service;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
-import th.ac.ku.atm.data.BankAccountRepository;
 import th.ac.ku.atm.model.BankAccount;
 import th.ac.ku.atm.model.Transaction;
 
@@ -16,18 +14,16 @@ import java.util.List;
 
 @Service
 public class BankAccountService {
-    private CustomerService customerService;
+    private th.ac.ku.atm.service.CustomerService customerService;
     private RestTemplate restTemplate;
-    private BankAccountRepository repository;
 
 
-    public BankAccountService(RestTemplate restTemplate, BankAccountRepository repository) {
+    public BankAccountService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.repository = repository;
     }
 
     @Autowired
-    public void setCustomerService(CustomerService customerService) {
+    public void setCustomerService(th.ac.ku.atm.service.CustomerService customerService) {
         this.customerService = customerService;
     }
 
@@ -55,7 +51,7 @@ public class BankAccountService {
         restTemplate.delete(url);
     }
 
-    public String transactAccount(TransactionMode mode, @PathVariable int id, Transaction tx) {
+    public String transactAccount(th.ac.ku.atm.service.TransactionMode mode, @PathVariable int id, Transaction tx) {
         String modeStr = "deposit";
         switch (mode) {
             case Deposit:
