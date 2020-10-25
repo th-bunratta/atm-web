@@ -1,3 +1,6 @@
+# Author's name: Tharathorn Bunrattanasathian
+# Student ID: 6110546011
+
 FROM maven:3.6-jdk-8
 WORKDIR /usr/atm-web
 COPY pom.xml .
